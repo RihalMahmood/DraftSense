@@ -11,8 +11,9 @@
     "seed:matchups": "ts-node src/scripts/seedMatchups.ts",
     "seed:synergies": "ts-node src/scripts/seedSynergies.ts",
     "seed:builds": "ts-node src/scripts/seedBuilds.ts",
+    "seed:builds:real": "ts-node src/scripts/seedBuildsReal.ts",
     "seed:real": "ts-node src/scripts/seedRealData.ts",
-    "seed:all": "npm run seed && npm run seed:matchups && npm run seed:synergies && npm run seed:builds",
+    "seed:all": "npm run seed && npm run seed:matchups && npm run seed:synergies && npm run seed:builds:real",
     "lint": "eslint src --ext .ts"
   },
   "dependencies": {

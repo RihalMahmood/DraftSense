@@ -38,23 +38,35 @@ export interface ISynergy {
 //Build
 
 export interface IRune {
+  id: number;         //Data Dragon rune ID (use to build icon CDN URL)
+  key: string;        //e.g. "Electrocute"
   name: string;
+  iconUrl: string;    //full CDN path for the rune icon
   description?: string;
-  iconUrl?: string;
 }
 
 export interface IRunePage {
   primaryTree: string;
+  primaryTreeId: number;
   primary: IRune[];
   secondaryTree: string;
+  secondaryTreeId: number;
   secondary: IRune[];
-  shards: IRune[];
+  shards: IRune[];    //stat shards (bottom row of rune page)
+}
+
+//Item with Data Dragon ID — frontend uses id to build CDN image URL:
+//https://ddragon.leagueoflegends.com/cdn/{patch}/img/item/{id}.png
+export interface IItem {
+  id: number;
+  name: string;
+  iconUrl: string;
 }
 
 export interface IItemBuild {
-  starter: string[];      //item names
-  core: string[];
-  situational: string[];
+  starter: IItem[];
+  core: IItem[];
+  situational: IItem[];
 }
 
 export interface IBuild {

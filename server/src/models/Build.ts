@@ -1,13 +1,15 @@
-import { Schema, model, Document, Model } from 'mongoose';
-import { IBuild, IRunePage, IItemBuild, IRune, Role } from '../types';
+import { Schema, model, Document } from 'mongoose';
+import { IBuild, IRunePage, IItemBuild, IRune, IItem, Role } from '../types';
 
 //Sub-schemas
 
 const RuneSchema = new Schema<IRune>(
   {
+    id: { type: Number, required: true },
+    key: { type: String, required: true },
     name: { type: String, required: true },
+    iconUrl: { type: String, required: true },
     description: { type: String },
-    iconUrl: { type: String },
   },
   { _id: false }
 );
@@ -15,19 +17,30 @@ const RuneSchema = new Schema<IRune>(
 const RunePageSchema = new Schema<IRunePage>(
   {
     primaryTree: { type: String, required: true },
+    primaryTreeId: { type: Number, required: true },
     primary: { type: [RuneSchema], required: true },
     secondaryTree: { type: String, required: true },
+    secondaryTreeId: { type: Number, required: true },
     secondary: { type: [RuneSchema], required: true },
     shards: { type: [RuneSchema], required: true },
   },
   { _id: false }
 );
 
+const ItemSchema = new Schema<IItem>(
+  {
+    id: { type: Number, required: true },
+    name: { type: String, required: true },
+    iconUrl: { type: String, required: true },
+  },
+  { _id: false }
+);
+
 const ItemBuildSchema = new Schema<IItemBuild>(
   {
-    starter: { type: [String], default: [] },
-    core: { type: [String], required: true },
-    situational: { type: [String], default: [] },
+    starter: { type: [ItemSchema], default: [] },
+    core: { type: [ItemSchema], required: true },
+    situational: { type: [ItemSchema], default: [] },
   },
   { _id: false }
 );
@@ -55,6 +68,6 @@ const BuildSchema = new Schema<BuildDocument>(
 
 BuildSchema.index({ championId: 1, role: 1 }, { unique: true });
 
-const Build: Model<BuildDocument> = model<BuildDocument>('Build', BuildSchema);
+const Build = model<BuildDocument>('Build', BuildSchema);
 
 export default Build;
