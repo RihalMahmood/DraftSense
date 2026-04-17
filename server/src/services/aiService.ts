@@ -91,7 +91,7 @@ async function callOllama(prompt: string): Promise<string> {
     prompt,
     stream: false,
     format: 'json',
-  });
+  }, { timeout: 5000 });  // fail fast if Ollama isn't running
   return response.data.response as string;
 }
 
@@ -111,6 +111,7 @@ async function callAnthropic(prompt: string): Promise<string> {
         'anthropic-version': '2023-06-01',
         'content-type': 'application/json',
       },
+      timeout: 15000,
     }
   );
   return response.data.content[0].text as string;

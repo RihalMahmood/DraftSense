@@ -8,6 +8,11 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "seed": "ts-node src/scripts/seedDatabase.ts",
+    "seed:matchups": "ts-node src/scripts/seedMatchups.ts",
+    "seed:synergies": "ts-node src/scripts/seedSynergies.ts",
+    "seed:builds": "ts-node src/scripts/seedBuilds.ts",
+    "seed:real": "ts-node src/scripts/seedRealData.ts",
+    "seed:all": "npm run seed && npm run seed:matchups && npm run seed:synergies && npm run seed:builds",
     "lint": "eslint src --ext .ts"
   },
   "dependencies": {
