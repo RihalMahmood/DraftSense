@@ -91,7 +91,7 @@ async function callOllama(prompt: string): Promise<string> {
     prompt,
     stream: false,
     format: 'json',
-  }, { timeout: 90000 });  // llama3.1:8b needs plenty of time on first load
+  }, { timeout: 15000 });  // llama3.1:8b needs plenty of time on first load, but 15s is max acceptable for UI
   return response.data.response as string;
 }
 

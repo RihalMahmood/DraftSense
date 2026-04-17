@@ -51,10 +51,10 @@ function addNoise(base: number, spread = 0.035, clampMin = 0.44, clampMax = 0.56
 
 async function seedSynergies(): Promise<void> {
   await mongoose.connect(MONGO_URI);
-  console.log('✅ Connected to MongoDB');
+  console.log('Connected to MongoDB');
 
   const champions = await Champion.find().lean();
-  console.log(`📋 Loaded ${champions.length} champions`);
+  console.log(`Loaded ${champions.length} champions`);
 
   let total = 0;
   const ops: mongoose.AnyBulkWriteOperation<any>[] = [];
@@ -98,16 +98,16 @@ async function seedSynergies(): Promise<void> {
     total += ops.length;
   }
 
-  console.log(`\n🎉 Synergy seeding complete! ${total} documents upserted`);
-  console.log('⚠️  This is SYNTHETIC data — replace later with real duo win-rate data.');
+  console.log(`\nSynergy seeding complete! ${total} documents upserted`);
+  console.log('This is SYNTHETIC data — replace later with real duo win-rate data.');
 }
 
 seedSynergies()
   .catch((err) => {
-    console.error('❌ Synergy seeding failed:', err);
+    console.error('Synergy seeding failed:', err);
   })
   .finally(async () => {
     await mongoose.disconnect();
-    console.log('🔌 Disconnected');
+    console.log('Disconnected');
     process.exit(0);
   });

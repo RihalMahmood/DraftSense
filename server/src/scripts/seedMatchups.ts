@@ -142,10 +142,10 @@ async function seedMatchups(): Promise<void> {
 
 seedMatchups()
   .catch((err) => {
-    console.error('❌ Matchup seeding failed:', err);
+    console.error('Matchup seeding failed:', err);
   })
   .finally(async () => {
     await mongoose.disconnect();
-    console.log('🔌 Disconnected');
+    console.log('Disconnected');
     process.exit(0);
   });

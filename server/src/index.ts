@@ -70,9 +70,9 @@ app.use(errorHandler);
 const start = async (): Promise<void> => {
   await connectDB();
   app.listen(PORT, () => {
-    console.log(`🚀 DraftSense server running on http://localhost:${PORT}`);
-    console.log(`🤖 AI provider: ${process.env.AI_PROVIDER ?? 'ollama'}`);
-    console.log(`🌍 Accepting requests from: ${CLIENT_URL}`);
+    console.log(`DraftSense server running on http://localhost:${PORT}`);
+    console.log(`AI provider: ${process.env.AI_PROVIDER ?? 'ollama'}`);
+    console.log(`Accepting requests from: ${CLIENT_URL}`);
   });
 };
 

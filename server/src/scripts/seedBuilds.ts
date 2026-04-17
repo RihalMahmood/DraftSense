@@ -210,17 +210,17 @@ async function seedBuilds(): Promise<void> {
     total += ops.length;
   }
 
-  console.log(`\n🎉 Build seeding complete! ${total} documents upserted`);
-  console.log('⚠️  These are TEMPLATE builds by champion archetype.');
-  console.log('   For per-champion real builds, consider U.GG or Mobafire scraping.');
+  console.log(`\nBuild seeding complete! ${total} documents upserted`);
+  console.log('These are TEMPLATE builds by champion archetype.');
+  console.log('For per-champion real builds, consider U.GG or Mobafire scraping.');
 }
 
 seedBuilds()
   .catch((err) => {
-    console.error('❌ Build seeding failed:', err);
+    console.error('Build seeding failed:', err);
   })
   .finally(async () => {
     await mongoose.disconnect();
-    console.log('🔌 Disconnected');
+    console.log('Disconnected');
     process.exit(0);
   });

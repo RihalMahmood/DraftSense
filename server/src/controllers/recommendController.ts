@@ -49,10 +49,20 @@ export const recommend = async (
         enrichRecommendations(input, overallBest),
       ]);
 
+    const mapScoredChampion = (sc: any) => ({
+      ...sc.champion,
+      id: sc.champion.championId,
+      image: sc.champion.imageUrl.split('/').pop(),
+      aiExplanation: sc.aiExplanation,
+      counterScore: sc.counterScore,
+      synergyScore: sc.synergyScore,
+      overallScore: sc.overallScore
+    });
+
     res.json({
-      counterPicks: enrichedCounters,
-      synergyPicks: enrichedSynergies,
-      overallBest: enrichedOverall,
+      counterPicks: enrichedCounters.map(mapScoredChampion),
+      synergyPicks: enrichedSynergies.map(mapScoredChampion),
+      overallBest: enrichedOverall.map(mapScoredChampion),
     });
   } catch (err) {
     next(err);

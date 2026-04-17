@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-background: #0a1420;
+  --color-surface: #0a1420;
+  --color-primary: #f0bf5c;
+  --color-primary-container: #c89b3c;
+  --color-secondary: #45ddfd;
+  --color-tertiary: #ffb3b0;
+  --color-surface-container-low: #131c29;
+  --color-surface-container-highest: #2c3543;
+  
+  --font-sans: 'Inter', sans-serif;
+  --font-serif: 'Cinzel', serif;
+  --font-body: 'Inter', sans-serif;
+  --font-display: 'Cinzel', serif;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-background);
+    color: #dae3f5;
+    font-family: var(--font-body);
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    letter-spacing: 0.05em;
+  }
+}
+
+@layer components {
+  .btn-sovereign {
+    @apply bg-gradient-to-r from-primary to-primary-container text-[#0a1420] font-bold py-3 px-8 transition-all duration-300;
+    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+  }
+  
+  .btn-sovereign:hover {
+    @apply shadow-[inset_0_0_10px_rgba(255,222,164,0.5)];
+  }
+  
+  .btn-sovereign-ghost {
+    @apply border border-primary/20 text-secondary bg-transparent py-3 px-8 transition-all duration-300;
+    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+  }
+
+  .btn-sovereign-ghost:hover {
+    @apply bg-primary/10;
+  }
+
+  .tactical-card {
+    @apply bg-surface-container-highest relative p-4 transition-all duration-300;
+  }
+  
+  .tactical-card::before, .tactical-card::after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border: 2px solid var(--color-primary);
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .tactical-card::before {
+    top: 0;
+    left: 0;
+    border-right: none;
+    border-bottom: none;
+  }
+
+  .tactical-card::after {
+    bottom: 0;
+    right: 0;
+    border-left: none;
+    border-top: none;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: var(--color-surface-container-low);
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--color-surface-container-highest);
+    border-radius: 3px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--color-primary);
+  }
+}

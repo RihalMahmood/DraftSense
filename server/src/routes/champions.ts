@@ -7,7 +7,12 @@ const router = Router();
 router.get('/', async (_req: Request, res: Response): Promise<void> => {
   try {
     const champions = await Champion.find().select('-__v').lean();
-    res.json(champions);
+    const mapped = champions.map((c: any) => ({
+      ...c,
+      id: c.championId,
+      image: c.imageUrl.split('/').pop(),
+    }));
+    res.json(mapped);
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch champions' });
   }
@@ -25,7 +30,12 @@ router.get('/:id', async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    res.json(champion);
+    const c: any = champion;
+    res.json({
+      ...c,
+      id: c.championId,
+      image: c.imageUrl.split('/').pop(),
+    });
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch champion' });
   }
