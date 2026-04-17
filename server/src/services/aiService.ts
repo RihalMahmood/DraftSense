@@ -91,7 +91,7 @@ async function callOllama(prompt: string): Promise<string> {
     prompt,
     stream: false,
     format: 'json',
-  }, { timeout: 15000 });  // llama3.1:8b needs plenty of time on first load, but 15s is max acceptable for UI
+  }, { timeout: 45000 });  // 45s is usually enough for a local 8B model to generate 15 sentences sequentially
   return response.data.response as string;
 }
 

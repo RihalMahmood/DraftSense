@@ -42,12 +42,10 @@ export const recommend = async (
       await scoreChampions(input);
 
     //Enrich top picks with AI explanations (non-blocking fallback)
-    const [enrichedCounters, enrichedSynergies, enrichedOverall] =
-      await Promise.all([
-        enrichRecommendations(input, counterPicks),
-        enrichRecommendations(input, synergyPicks),
-        enrichRecommendations(input, overallBest),
-      ]);
+    //We call these sequentially to prevent overloading local local OLLAMA VRAM/Queues.
+    const enrichedCounters = await enrichRecommendations(input, counterPicks);
+    const enrichedSynergies = await enrichRecommendations(input, synergyPicks);
+    const enrichedOverall = await enrichRecommendations(input, overallBest);
 
     const mapScoredChampion = (sc: any) => ({
       ...sc.champion,
