@@ -1,11 +1,20 @@
 export interface Champion {
   id: string;
   name: string;
+  title?: string;
   image: string;  //The short filename like "Aatrox.png"
   roles: string[];
 }
 
 export type Role = 'top' | 'jungle' | 'mid' | 'bot' | 'support';
+
+export interface TeamPicks {
+  top: string | null;
+  jungle: string | null;
+  mid: string | null;
+  bot: string | null;
+  support: string | null;
+}
 
 //Matches the backend Recommendation response
 export interface RecommendationResponse {

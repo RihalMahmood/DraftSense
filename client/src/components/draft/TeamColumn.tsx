@@ -14,15 +14,23 @@ export const TeamColumn: FC<TeamColumnProps> = ({ side, onPickClick, championsMe
   const myRole = useDraftStore(state => state.myRole);
 
   const roles: Role[] = ['top', 'jungle', 'mid', 'bot', 'support'];
-  const sideColorClass = isBlue ? 'text-secondary' : 'text-tertiary';
-  const sideBorderClass = isBlue ? 'border-secondary/30' : 'border-tertiary/30';
-  const sideHoverBorder = isBlue ? 'hover:border-secondary' : 'hover:border-tertiary';
+  
+  const titleColor = isBlue ? 'text-[#45ddfd]' : 'text-[#ff7876]';
+  const titleText = isBlue ? 'YOUR TEAM' : 'ENEMY TEAM';
+  const alignment = isBlue ? 'items-end' : 'items-start';
+  const borderColor = isBlue ? 'border-[#45ddfd]/30' : 'border-[#ff7876]/30';
+  const gradientDir = isBlue ? 'bg-gradient-to-l' : 'bg-gradient-to-r';
+  const iconColor = isBlue ? 'text-[#f0bf5c]' : 'text-[#45ddfd]';
+  const iconBorderOpacity = isBlue ? 'border-[#f0bf5c]/30 shadow-[0_0_10px_rgba(240,191,92,0.2)]' : 'border-[#45ddfd]/30 shadow-[0_0_10px_rgba(69,221,253,0.2)]';
+  const nameColor = isBlue ? 'text-[#45ddfd]' : 'text-[#ff7876]';
+
+  const getDDragonImg = (imageName: string) => `https://ddragon.leagueoflegends.com/cdn/14.8.1/img/champion/${imageName}`;
 
   return (
-    <div className={`flex flex-col gap-3 w-full sm:w-64`}>
-      <h3 className={`font-display text-2xl uppercase tracking-widest ${sideColorClass} mb-4 ${isBlue ? 'text-right' : 'text-left'}`}>
-        {isBlue ? 'Ally Team' : 'Enemy Team'}
-      </h3>
+    <div className={`flex flex-col gap-3 p-4 ${alignment}`}>
+      <h2 className={`cinzel text-xl tracking-widest mb-2 ${titleColor} ${isBlue ? 'pr-4' : 'pl-4'}`}>
+        {titleText}
+      </h2>
 
       {roles.map((role) => {
         const champId = picks[role];
@@ -32,55 +40,60 @@ export const TeamColumn: FC<TeamColumnProps> = ({ side, onPickClick, championsMe
         return (
           <div
             key={role}
-            onClick={() => {
-              if (!isMe) onPickClick(role, side);
-            }}
-            className={`
-              relative h-20 bg-surface-container-low border ${sideBorderClass} 
-              ${isMe ? 'opacity-50 cursor-not-allowed border-primary/50' : `cursor-pointer ${sideHoverBorder}`} 
-              transition-all duration-300 flex items-center p-3
-              ${isBlue ? 'flex-row-reverse' : 'flex-row'}
-            `}
-            style={{
-              clipPath: isBlue
-                ? 'polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px)'
-                : 'polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px)'
-            }}
+            onClick={() => onPickClick(role, side)}
+            className={`w-full max-w-[400px] h-20 bg-[#131c29] border ${borderColor} relative overflow-hidden group cursor-pointer clip-path-polygon ${isMe && !champInfo ? 'animate-pulse' : ''}`}
           >
-            {/*Role Icon Area*/}
-            <div className={`w-10 h-10 flex items-center justify-center border border-surface-container-highest bg-surface text-xs font-display text-white/50 ${isBlue ? 'ml-3' : 'mr-3'}`}>
-              {role.substring(0, 3).toUpperCase()}
-            </div>
-
-            {/*Champion Details or Blank*/}
-            <div className={`flex-1 flex flex-col justify-center ${isBlue ? 'text-right' : 'text-left'} overflow-hidden`}>
-              {champInfo ? (
-                <>
-                  <span className="font-display text-white truncate text-lg tracking-wide">{champInfo.name}</span>
-                  {isMe && <span className="text-[10px] text-primary uppercase font-bold tracking-widest mt-1">Your Pick</span>}
-                </>
-              ) : (
-                <>
-                  <span className="text-surface-container-highest uppercase text-sm font-bold tracking-widest">
-                    {isMe ? 'Evaluating' : 'Selecting...'}
-                  </span>
-                  {isMe && <span className="text-[10px] text-primary uppercase font-bold tracking-widest mt-1">Your Role</span>}
-                </>
-              )}
-            </div>
-
-            {/*Background Champion Splash (simulated with standard square img object cover to the side)*/}
             {champInfo && (
-              <div className={`absolute top-0 ${isBlue ? 'left-0' : 'right-0'} w-1/2 h-full -z-10 opacity-30 mask-image-gradient`}>
-                <img
-                  src={`https://ddragon.leagueoflegends.com/cdn/14.8.1/img/champion/${champInfo.image}`}
-                  alt=""
-                  className="w-full h-full object-cover"
-                />
-              </div>
+              <img 
+                className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-luminosity group-hover:mix-blend-normal group-hover:opacity-60 transition-all duration-500" 
+                src={getDDragonImg(champInfo.image)} 
+                alt={champInfo.name}
+              />
             )}
+            
+            <div className={`absolute inset-0 ${gradientDir} from-transparent via-[#131c29]/80 to-[#131c29]`}></div>
+            
+            <div className={`absolute inset-0 flex items-center p-4 ${isBlue ? 'justify-start' : 'justify-end'}`}>
+              
+              {isBlue && (
+                <div className={`flex items-center justify-center w-10 h-10 border ${iconBorderOpacity} bg-[#0a1420]/80 shrink-0`}>
+                  <span className={`font-cinzel text-xs font-bold tracking-widest ${iconColor}`}>
+                    {role.substring(0,3).toUpperCase()}
+                  </span>
+                </div>
+              )}
 
-            <div className={`absolute inset-0 bg-linear-to-r ${isBlue ? 'from-secondary/5 to-transparent' : 'from-transparent to-tertiary/5'} opacity-0 hover:opacity-100 transition-opacity pointer-events-none`}></div>
+              <div className={isBlue ? 'ml-4 text-left' : 'mr-4 text-right'}>
+                {champInfo ? (
+                  <>
+                    <div className={`cinzel text-lg font-bold tracking-wider group-hover:text-white transition-colors ${nameColor}`}>
+                      {champInfo.name.toUpperCase()}
+                    </div>
+                    <div className="sora text-[10px] text-[#A0B4C8] uppercase tracking-widest">
+                      {isMe ? 'YOUR CHAMPION' : 'LOCKED'}
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className={`cinzel text-lg font-bold tracking-wider opacity-50 ${nameColor}`}>
+                      {isMe ? 'SELECTING...' : 'WAITING...'}
+                    </div>
+                    <div className="sora text-[10px] text-[#A0B4C8] uppercase tracking-widest opacity-50">
+                      {role}
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {!isBlue && (
+                <div className={`flex items-center justify-center w-10 h-10 border ${iconBorderOpacity} bg-[#0a1420]/80 shrink-0`}>
+                  <span className={`font-cinzel text-xs font-bold tracking-widest ${iconColor}`}>
+                    {role.substring(0,3).toUpperCase()}
+                  </span>
+                </div>
+              )}
+              
+            </div>
           </div>
         );
       })}

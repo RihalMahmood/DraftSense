@@ -2,81 +2,126 @@ import type { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDraftStore } from '../store/draftStore';
 import type { Role } from '../types';
+import { useState } from 'react';
 
 export const RoleSelectPage: FC = () => {
   const navigate = useNavigate();
   const setMyRole = useDraftStore(state => state.setMyRole);
+  const [selectedRole, setSelectedRole] = useState<Role | null>(null);
 
-  const roles: { id: Role; label: string }[] = [
-    { id: 'top', label: 'TOP LANE' },
-    { id: 'jungle', label: 'JUNGLE' },
-    { id: 'mid', label: 'MID LANE' },
-    { id: 'bot', label: 'BOT LANE' },
-    { id: 'support', label: 'SUPPORT' }
+  const roles: { id: Role; label: string; icon: string; desc: string }[] = [
+    { id: 'top', label: 'TOP', icon: 'keyboard_double_arrow_up', desc: 'SOLO LANE CARRY' },
+    { id: 'jungle', label: 'JUNGLE', icon: 'waves', desc: 'MAP CONTROL' },
+    { id: 'mid', label: 'MID', icon: 'bolt', desc: 'BURST DAMAGE' },
+    { id: 'bot', label: 'BOT', icon: 'target', desc: 'SUSTAINED DPS' },
+    { id: 'support', label: 'SUPPORT', icon: 'security', desc: 'UTILITY TANK' }
   ];
 
   const handleRoleSelect = (role: Role) => {
-    setMyRole(role);
-    navigate('/draft');
+    setSelectedRole(role);
+  };
+
+  const handleConfirm = () => {
+    if (selectedRole) {
+      setMyRole(selectedRole);
+      navigate('/draft');
+    }
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-8 py-12 relative overflow-hidden">
-      {/*Background Effects*/}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute inset-0 bg-linear-to-br from-[#0a1420] via-background to-[#120a1c] opacity-100"></div>
-        <div className="absolute inset-0 hex-overlay opacity-30"></div>
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-secondary/5 blur-[120px]"></div>
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-primary/5 blur-[120px]"></div>
+    <div className="bg-[#030b17] text-on-background font-body overflow-hidden min-h-screen">
+      {/*Atmospheric Background Layers*/}
+      <div className="fixed inset-0 z-0">
+        <div className="absolute inset-0 bg-cover bg-center opacity-15 blur-[20px] scale-110"
+          style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuDKJvJ-pjjfbPvfUa2i-y7I-GztHgpzqDwTCaLeB7WtzO6MstyBPZJl0vv5ddImueqj2Ab7eSoQ4FGrLlMrYR3etYDyzguyays5DtSsXrVYUsLxfQkEQuJCxwtHcgwf9NmuDqsda7MBFia4XQxq7MEuI8XFsgXv_x6CBgkr6HcBRZs6cHwWFl1vRfj4QAVHtDTiiWu4GHJvWf0UhI6f2qaqoEeT8Pzi9RFnWQZubN0UdeKvcT8l7mU8HscZjaxhnzy6DhPdjQxKqb82')" }}>
+        </div>
+        <div className="absolute inset-0 vignette"></div>
+        <div className="absolute inset-0 hex-grid"></div>
+        {/*Subtle Golden Dust Motes*/}
+        <div className="dust-particle w-1 h-1 top-[20%] left-[10%]"></div>
+        <div className="dust-particle w-1.5 h-1.5 top-[60%] left-[80%]"></div>
+        <div className="dust-particle w-0.5 h-0.5 top-[30%] left-[40%]"></div>
+        <div className="dust-particle w-1 h-1 top-[80%] left-[25%]"></div>
       </div>
 
-      <div className="z-10 text-center mb-24">
-        <h2 className="text-xs tracking-widest text-secondary mb-4 uppercase font-sora">Identify Your Vector</h2>
-        <h1 className="text-7xl font-newsreader font-bold text-primary drop-shadow-[0_0_20px_rgba(240,191,92,0.3)] uppercase tracking-widest">
-          SELECT YOUR<br />ROLE
-        </h1>
-      </div>
+      {/*Main Content Shell*/}
+      <main className="relative z-10 flex flex-col items-center justify-center min-h-[884px] h-screen px-4 space-y-16">
+        {/*Header Section*/}
+        <header className="text-center">
+          <h1 className="font-cinzel text-5xl md:text-[56px] tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-b from-primary to-primary-container font-bold">
+            DRAFTSENSE
+          </h1>
+          <p className="font-sora text-base md:text-[16px] text-[#A0B4C8] mt-4 tracking-[0.1em] opacity-80 uppercase">
+            Your AI-powered champion draft advisor
+          </p>
+          <div className="w-32 h-[1px] bg-primary-container/40 mx-auto mt-8"></div>
+        </header>
 
-      <div className="z-10 grid grid-cols-2 lg:grid-cols-5 gap-8 max-w-6xl w-full">
-        {roles.map((role, idx) => (
-          <button
-            key={role.id}
-            onClick={() => handleRoleSelect(role.id)}
-            className="group relative w-full bg-surface-container border border-outline-variant/30 transition-all duration-500 hover:border-primary/50 overflow-hidden flex flex-col items-center justify-center p-8 aspect-3/4 hover:scale-105 hover:-translate-y-2"
-            style={{
-              animation: `fadeInUp 0.6s ease backwards`,
-              animationDelay: `${idx * 100}ms`
-            }}
-          >
-            {/*Bracket decorations*/}
-            <div className="bracket-tl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-            <div className="bracket-tr opacity-0 group-hover:opacity-100 transition-opacity"></div>
-            <div className="bracket-bl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-            <div className="bracket-br opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        {/*Role Selection Container*/}
+        <section className="flex flex-col items-center w-full max-w-6xl">
+          <h2 className="font-cinzel text-[13px] text-primary tracking-[0.3em] mb-12 opacity-90">
+            SELECT YOUR ROLE
+          </h2>
 
-            {/*The warm glow on hover*/}
-            <div className="absolute inset-0 bg-linear-to-t from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          {/*Horizontal Role Cards Grid*/}
+          <div className="flex flex-wrap justify-center gap-6">
+            {roles.map(role => {
+              const isActive = selectedRole === role.id;
+              return (
+                <button
+                  key={role.id}
+                  onClick={() => handleRoleSelect(role.id)}
+                  className={`role-card group relative w-[120px] h-[180px] flex flex-col items-center justify-center transition-all duration-300 outline-none
+                          ${isActive ? 'bg-surface-container-highest border border-primary/40 focus:-translate-y-2 ring-1 ring-primary/20 scale-105 -translate-y-2 shadow-[0_0_30px_rgba(240,191,92,0.25)]'
+                      : 'bg-[#0F2043] border border-[#1E3A5F] hover:-translate-y-2 hover:bg-[#132a58] hover:shadow-[0_0_30px_rgba(240,191,92,0.15)] focus:ring-1 focus:ring-primary/50'}`}
+                >
+                  {isActive ? (
+                    <>
+                      <div className="angular-bracket-tl"></div>
+                      <div className="angular-bracket-tr"></div>
+                      <div className="angular-bracket-bl"></div>
+                      <div className="angular-bracket-br"></div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="angular-bracket-tl hidden group-hover:block opacity-30"></div>
+                      <div className="angular-bracket-tr hidden group-hover:block opacity-30"></div>
+                      <div className="angular-bracket-bl hidden group-hover:block opacity-30"></div>
+                      <div className="angular-bracket-br hidden group-hover:block opacity-30"></div>
+                    </>
+                  )}
+                  <span className={`material-symbols-outlined text-4xl mb-4 transition-transform duration-300 ${isActive ? 'text-primary scale-110' : 'text-primary group-hover:scale-110'}`}
+                    style={{ fontVariationSettings: "'FILL' 1" }}>
+                    {role.icon}
+                  </span>
+                  <span className={`font-cinzel text-sm tracking-[0.1em] mb-1 ${isActive ? 'text-primary' : 'text-on-background'}`}>{role.label}</span>
+                  <span className="font-body text-[10px] text-[#A0B4C8] text-center px-2">{role.desc}</span>
+                </button>
+              );
+            })}
+          </div>
 
-            {/*Role Name*/}
-            <span className="font-newsreader tracking-widest text-2xl text-secondary/60 group-hover:text-primary uppercase relative z-10 transition-colors duration-300 text-center">
-              {role.label}
-            </span>
-          </button>
-        ))}
-      </div>
+          {/*Action Button*/}
+          <div className="mt-20 w-full flex justify-center">
+            <button
+              onClick={handleConfirm}
+              disabled={!selectedRole}
+              className={`cut-corner w-full max-w-[320px] h-14 font-cinzel text-sm font-bold tracking-[0.2em] px-12 transition-all duration-200 
+                      ${selectedRole ? 'bg-gradient-to-r from-primary to-primary-container text-on-primary hover:scale-105 hover:brightness-110 active:scale-95 shadow-[0_0_40px_rgba(240,191,92,0.2)]'
+                  : 'bg-surface-container-highest text-on-surface-variant cursor-not-allowed opacity-50'}`}
+            >
+              CONFIRM ROLE
+            </button>
+          </div>
+        </section>
 
-      <style>{`
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
+        {/*Footer Info*/}
+        <footer className="absolute bottom-8 text-center w-full">
+          <p className="font-body text-[11px] text-[#A0B4C8]/50 tracking-[0.1em] uppercase">
+            Powered by Ollama AI • Data from Riot Data Dragon
+          </p>
+        </footer>
+      </main>
     </div>
   );
 };

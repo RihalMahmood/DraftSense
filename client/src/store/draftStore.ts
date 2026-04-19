@@ -1,14 +1,5 @@
 import { create } from 'zustand';
-
-type Role = 'top' | 'jungle' | 'mid' | 'bot' | 'support';
-
-interface TeamPicks {
-  top: string | null;
-  jungle: string | null;
-  mid: string | null;
-  bot: string | null;
-  support: string | null;
-}
+import type { Role, TeamPicks } from '../types';
 
 interface DraftState {
   myRole: Role | null;
