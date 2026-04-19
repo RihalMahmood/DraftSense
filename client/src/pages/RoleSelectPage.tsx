@@ -7,12 +7,12 @@ export const RoleSelectPage: FC = () => {
   const navigate = useNavigate();
   const setMyRole = useDraftStore(state => state.setMyRole);
 
-  const roles: { id: Role; label: string; icon: string }[] = [
-    { id: 'top', label: 'Top Lane', icon: 'M' },  //using a placeholder char for icon since we don't have SVG paths readily handy
-    { id: 'jungle', label: 'Jungle', icon: 'J' },
-    { id: 'mid', label: 'Mid Lane', icon: 'M' },
-    { id: 'bot', label: 'Bot Lane', icon: 'B' },
-    { id: 'support', label: 'Support', icon: 'S' }
+  const roles: { id: Role; label: string }[] = [
+    { id: 'top', label: 'TOP LANE' },
+    { id: 'jungle', label: 'JUNGLE' },
+    { id: 'mid', label: 'MID LANE' },
+    { id: 'bot', label: 'BOT LANE' },
+    { id: 'support', label: 'SUPPORT' }
   ];
 
   const handleRoleSelect = (role: Role) => {
@@ -21,46 +21,62 @@ export const RoleSelectPage: FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden bg-[url('/bg-texture.png')] bg-cover bg-center">
-      {/*Hexagonal overlay grid pattern typical for the Sovereign's War Room design*/}
-      <div className="absolute inset-0 opacity-[0.05] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#0BC4E3 1px, transparent 1px)', backgroundSize: '24px 24px' }}></div>
-      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-background via-transparent to-background pointer-events-none"></div>
+    <div className="min-h-screen flex flex-col items-center justify-center px-8 py-12 relative overflow-hidden">
+      {/*Background Effects*/}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute inset-0 bg-linear-to-br from-[#0a1420] via-background to-[#120a1c] opacity-100"></div>
+        <div className="absolute inset-0 hex-overlay opacity-30"></div>
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-secondary/5 blur-[120px]"></div>
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-primary/5 blur-[120px]"></div>
+      </div>
 
-      <div className="z-10 text-center mb-12">
-        <h2 className="text-sm tracking-[0.2em] text-secondary mb-2 uppercase font-body">Identify Your Vector</h2>
-        <h1 className="text-5xl md:text-7xl font-display text-primary drop-shadow-[0_0_20px_rgba(240,191,92,0.3)]">
+      <div className="z-10 text-center mb-24">
+        <h2 className="text-xs tracking-widest text-secondary mb-4 uppercase font-sora">Identify Your Vector</h2>
+        <h1 className="text-7xl font-newsreader font-bold text-primary drop-shadow-[0_0_20px_rgba(240,191,92,0.3)] uppercase tracking-widest">
           SELECT YOUR<br />ROLE
         </h1>
       </div>
 
-      <div className="z-10 grid grid-cols-2 lg:grid-cols-5 gap-6 max-w-5xl w-full">
-        {roles.map((r, idx) => (
+      <div className="z-10 grid grid-cols-2 lg:grid-cols-5 gap-8 max-w-6xl w-full">
+        {roles.map((role, idx) => (
           <button
-            key={r.id}
-            onClick={() => handleRoleSelect(r.id)}
-            className="group relative w-full aspect-[3/4] bg-surface-container-low border border-surface-container-highest transition-all duration-500 hover:scale-105 hover:-translate-y-2 hover:border-primary/50 overflow-hidden flex flex-col items-center justify-center"
+            key={role.id}
+            onClick={() => handleRoleSelect(role.id)}
+            className="group relative w-full bg-surface-container border border-outline-variant/30 transition-all duration-500 hover:border-primary/50 overflow-hidden flex flex-col items-center justify-center p-8 aspect-3/4 hover:scale-105 hover:-translate-y-2"
             style={{
-              clipPath: 'polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px)',
+              animation: `fadeInUp 0.6s ease backwards`,
               animationDelay: `${idx * 100}ms`
             }}
           >
+            {/*Bracket decorations*/}
+            <div className="bracket-tl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div className="bracket-tr opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div className="bracket-bl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div className="bracket-br opacity-0 group-hover:opacity-100 transition-opacity"></div>
+
             {/*The warm glow on hover*/}
-            <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="absolute inset-0 bg-linear-to-t from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-            <div className="text-4xl text-surface-container-highest group-hover:text-primary transition-colors duration-300 font-display mb-4 p-4 border border-surface-container-highest rounded-full group-hover:border-primary/50">
-              {r.icon}
-            </div>
-
-            <span className="font-display tracking-widest text-lg text-white/50 group-hover:text-white uppercase relative z-10 transition-colors duration-300">
-              {r.label}
+            {/*Role Name*/}
+            <span className="font-newsreader tracking-widest text-2xl text-secondary/60 group-hover:text-primary uppercase relative z-10 transition-colors duration-300 text-center">
+              {role.label}
             </span>
-
-            {/*Gold brackets inside the card*/}
-            <div className="absolute top-2 left-2 w-3 h-3 border-t border-l border-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
-            <div className="absolute bottom-2 right-2 w-3 h-3 border-b border-r border-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
           </button>
         ))}
       </div>
+
+      <style>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </div>
   );
 };

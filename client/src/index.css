@@ -1,59 +1,127 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,700;6..72,800&family=Inter:wght@400;600;700&family=Rajdhani:wght@500;700&family=Cinzel:wght@700;900&family=Sora:wght@400;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --color-background: #0a1420;
+  --color-background: #030B17;
   --color-surface: #0a1420;
   --color-primary: #f0bf5c;
   --color-primary-container: #c89b3c;
   --color-secondary: #45ddfd;
-  --color-tertiary: #ffb3b0;
+  --color-secondary-container: #2c3543;
+  --color-tertiary: #ff7876;
   --color-surface-container-low: #131c29;
-  --color-surface-container-highest: #2c3543;
+  --color-surface-container: #091428;
+  --color-surface-container-high: #0a1420;
+  --color-surface-container-highest: #212b38;
+  --color-on-surface: #e0e8f7;
+  --color-on-surface-variant: #aab7c7;
+  --color-outline-variant: #4f5a69;
   
   --font-sans: 'Inter', sans-serif;
   --font-serif: 'Cinzel', serif;
   --font-body: 'Inter', sans-serif;
   --font-display: 'Cinzel', serif;
+  --font-newsreader: 'Newsreader', serif;
+  --font-rajdhani: 'Rajdhani', sans-serif;
+  --font-sora: 'Sora', sans-serif;
 }
 
 @layer base {
+  * {
+    box-sizing: border-box;
+  }
+
   body {
     background-color: var(--color-background);
-    color: #dae3f5;
+    background-image:
+      radial-gradient(circle at 50% 50%, rgba(11, 196, 227, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, #030B17, #0a1420);
+    background-size: 30px 30px, 100% 100%;
+    color: #e0e8f7;
     font-family: var(--font-body);
     margin: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-display);
-    letter-spacing: 0.05em;
-  }
-}
-
-@layer components {
+/* Buttons */
   .btn-sovereign {
-    @apply bg-gradient-to-r from-primary to-primary-container text-[#0a1420] font-bold py-3 px-8 transition-all duration-300;
-    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+    @apply bg-linear-to-r from-primary to-primary-container text-[#0a1420] font-bold py-3 px-8 transition-all duration-300 uppercase tracking-widest;
+    clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
   }
   
   .btn-sovereign:hover {
-    @apply shadow-[inset_0_0_10px_rgba(255,222,164,0.5)];
+    @apply brightness-110 shadow-[0_0_20px_rgba(240,191,92,0.4)];
+  }
+
+  .btn-sovereign:active {
+    @apply scale-95;
   }
   
   .btn-sovereign-ghost {
-    @apply border border-primary/20 text-secondary bg-transparent py-3 px-8 transition-all duration-300;
-    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+    @apply border border-primary/30 text-secondary bg-transparent py-3 px-8 transition-all duration-300;
+    clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
   }
 
   .btn-sovereign-ghost:hover {
-    @apply bg-primary/10;
+    @apply bg-primary/10 text-primary;
   }
 
+  /* Bracket decorations */
+  .bracket-tl {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 12px;
+    height: 12px;
+    border-top: 2px solid #f0bf5c;
+    border-left: 2px solid #f0bf5c;
+  }
+
+  .bracket-tr {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 12px;
+    height: 12px;
+    border-top: 2px solid #f0bf5c;
+    border-right: 2px solid #f0bf5c;
+  }
+
+  .bracket-bl {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 12px;
+    height: 12px;
+    border-bottom: 2px solid #f0bf5c;
+    border-left: 2px solid #f0bf5c;
+  }
+
+  .bracket-br {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 12px;
+    height: 12px;
+    border-bottom: 2px solid #f0bf5c;
+    border-right: 2px solid #f0bf5c;
+  }
+
+  .clip-path-polygon {
+    clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+  }
+
+  .sovereign-clip {
+    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+  }
+
+  .gold-gradient-bg {
+    @apply bg-linear-to-r from-primary to-primary-container text-[#0a1420];
+  }
+
+  /* Cards */
   .tactical-card {
-    @apply bg-surface-container-highest relative p-4 transition-all duration-300;
+    @apply bg-surface-container-highest relative p-4 transition-all duration-300 border border-outline-variant/30;
   }
   
   .tactical-card::before, .tactical-card::after {
@@ -64,6 +132,85 @@
     border: 2px solid var(--color-primary);
     opacity: 0.5;
     pointer-events: none;
+  }
+
+  .tactical-card::before {
+    top: 0;
+    left: 0;
+    border-right: none;
+    border-bottom: none;
+  }
+
+  .tactical-card::after {
+    bottom: 0;
+    right: 0;
+    border-left: none;
+    border-top: none;
+  }
+
+  /* Scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: var(--color-surface-container-low);
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--color-surface-container-highest);
+    border-radius: 3px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--color-primary);
+  }
+
+  /* Font classes */
+  .cinzel {
+    font-family: var(--font-display);
+  }
+
+  .newsreader {
+    font-family: var(--font-newsreader);
+  }
+
+  .rajdhani {
+    font-family: var(--font-rajdhani);
+  }
+
+  .sora {
+    font-family: var(--font-sora);
+  }
+
+  /* Item clip styling */
+  .item-clip {
+    clip-path: polygon(0 0, 100% 0, 95% 100%, 0 100%);
+  }
+
+  /* Gold bracket for build guides */
+  .gold-bracket {
+    position: relative;
+    border-top: 3px solid #f0bf5c;
+  }
+
+  .gold-bracket::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 12px;
+    height: 12px;
+    border-top: 2px solid #f0bf5c;
+    border-left: 2px solid #f0bf5c;
+  }
+
+  .gold-bracket::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 12px;
+    height: 12px;
+    border-bottom: 2px solid #f0bf5c;
+    border-right: 2px solid #f0bf5c;
   }
 
   .tactical-card::before {

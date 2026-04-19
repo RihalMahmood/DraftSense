@@ -80,7 +80,7 @@ export const TeamColumn: FC<TeamColumnProps> = ({ side, onPickClick, championsMe
               </div>
             )}
 
-            <div className={`absolute inset-0 bg-gradient-to-r ${isBlue ? 'from-secondary/5 to-transparent' : 'from-transparent to-tertiary/5'} opacity-0 hover:opacity-100 transition-opacity pointer-events-none`}></div>
+            <div className={`absolute inset-0 bg-linear-to-r ${isBlue ? 'from-secondary/5 to-transparent' : 'from-transparent to-tertiary/5'} opacity-0 hover:opacity-100 transition-opacity pointer-events-none`}></div>
           </div>
         );
       })}

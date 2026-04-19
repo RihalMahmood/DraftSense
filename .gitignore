@@ -1,5 +1,9 @@
 #Normal Files
 Project_plan.txt
+BuildGuidePage.html
+DraftInputPage.html
+RecommendationsPage.html
+RoleSelectPage.html
 
 #Dependencies
 node_modules/

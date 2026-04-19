@@ -13,55 +13,93 @@ interface SectionProps {
 }
 
 const Section = ({ title, champs, highlight, onViewBuild }: SectionProps) => {
-  const highlightColor = highlight === 'primary' ? 'text-primary border-primary'
-    : highlight === 'secondary' ? 'text-secondary border-secondary'
-      : 'text-tertiary border-tertiary';
-
   return (
-    <div className="mb-12">
-      <h3 className={`font-display text-xl uppercase tracking-[0.15em] mb-6 flex items-center gap-4 ${highlightColor.split(' ')[0]}`}>
-        <div className={`w-2 h-2 ${highlightColor.split(' ')[0].replace('text-', 'bg-')}`}></div>
-        {title}
-        <div className="flex-1 h-px bg-surface-container-low relative">
-          <div className={`absolute top-0 left-0 h-full w-1/3 ${highlightColor.split(' ')[0].replace('text-', 'bg-')} opacity-30`}></div>
-        </div>
-      </h3>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+    <section className="mb-16">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className={`text-2xl font-headline text-primary tracking-widest uppercase flex items-center gap-3`}>
+          <span>{highlight === 'primary' ? '🏆' : highlight === 'secondary' ? '⚡' : '💎'}</span> {title}
+        </h2>
+        <span className="h-px bg-linear-to-r from-primary/50 to-transparent grow ml-8"></span>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {champs.map((champ, idx) => (
           <div
             key={champ.id}
-            className="tactical-card group cursor-pointer hover:-translate-y-1"
+            className="relative group cursor-pointer"
             onClick={() => onViewBuild(champ)}
-            style={{ animationDelay: `${idx * 100}ms`, animation: 'fadeInUp 0.5s ease backwards' }}
+            style={{ animation: 'fadeInUp 0.5s ease backwards', animationDelay: `${idx * 100}ms` }}
           >
-            <div className="aspect-[3/4] relative overflow-hidden mb-4">
-              <img
-                src={`https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${champ.id}_0.jpg`}
-                alt={champ.name}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                onError={(e) => {
-                  //Fallback to square if loading image isn't available
-                  e.currentTarget.src = `https://ddragon.leagueoflegends.com/cdn/14.8.1/img/champion/${champ.image}`;
-                }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent"></div>
-              <h4 className="absolute bottom-3 left-3 text-2xl font-display text-white uppercase drop-shadow-lg group-hover:text-primary transition-colors">
-                {champ.name}
-              </h4>
-            </div>
-            <div className="px-2 pb-2">
-              <p className="text-xs text-surface-container-highest group-hover:text-secondary transition-colors">
-                VIEW TACTICAL BUILD &rarr;
-              </p>
+            <div className="absolute -inset-0.5 bg-linear-to-b from-primary via-secondary to-primary opacity-20 blur-sm group-hover:opacity-40 transition-opacity" style={{ display: highlight === 'primary' ? 'block' : 'none' }}></div>
+            <div className="relative bg-surface-container-highest border border-primary/30 p-6 flex flex-col h-full hover:border-primary/50 transition-colors" style={{ display: highlight === 'primary' ? 'block' : undefined }}>
+              <div className="bracket-tl"></div>
+              <div className="bracket-tr"></div>
+              <div className="bracket-bl"></div>
+              <div className="bracket-br"></div>
+              {highlight === 'primary' && (
+                <div className="absolute top-0 right-0 px-3 py-1 gold-gradient-bg text-on-primary font-rajdhani text-xs font-bold uppercase tracking-widest">
+                  #1
+                </div>
+              )}
+              <div className="h-48 mb-6 overflow-hidden border border-outline-variant/30 relative">
+                <img
+                  alt={champ.name}
+                  className="w-full h-full object-cover scale-110 group-hover:scale-125 transition-transform duration-700"
+                  src={`https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${champ.id}_0.jpg`}
+                  onError={(e) => {
+                    e.currentTarget.src = `https://ddragon.leagueoflegends.com/cdn/14.8.1/img/champion/${champ.image}`;
+                  }}
+                />
+                <div className="absolute inset-0 bg-linear-to-t from-surface-container-highest to-transparent"></div>
+                <div className="absolute bottom-2 left-2">
+                  <p className="text-3xl font-headline text-on-surface uppercase tracking-widest">{champ.name}</p>
+                  <p className="text-[10px] text-primary uppercase font-rajdhani tracking-widest">Piltover Enforcer</p>
+                </div>
+              </div>
+              <div className="space-y-4 mb-8">
+                <div className="flex justify-between items-end">
+                  <span className="text-[10px] font-rajdhani text-on-surface-variant uppercase">Win Probability</span>
+                  <span className="text-2xl font-rajdhani text-primary">58.4%</span>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex justify-between text-[10px] uppercase font-rajdhani tracking-tighter">
+                    <span className="text-tertiary">Counter Score</span>
+                    <span className="text-tertiary">88</span>
+                  </div>
+                  <div className="h-1 bg-surface-container-lowest">
+                    <div className="h-full bg-tertiary" style={{ width: '88%' }}></div>
+                  </div>
+                  <div className="flex justify-between text-[10px] uppercase font-rajdhani tracking-tighter mt-2">
+                    <span className="text-secondary">Synergy Score</span>
+                    <span className="text-secondary">92</span>
+                  </div>
+                  <div className="h-1 bg-surface-container-lowest">
+                    <div className="h-full bg-secondary" style={{ width: '92%' }}></div>
+                  </div>
+                </div>
+              </div>
+              <button className="mt-auto gold-gradient-bg text-on-primary font-headline uppercase tracking-[0.2em] py-3 text-sm hover:brightness-110 transition-all sovereign-clip active:scale-95 shadow-lg shadow-primary/20">
+                SELECT CHAMPION
+              </button>
             </div>
           </div>
         ))}
       </div>
-    </div>
+
+      <style>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
+    </section>
   );
 };
-
 
 export const RecommendationsPage: FC = () => {
   const navigate = useNavigate();
@@ -99,64 +137,133 @@ export const RecommendationsPage: FC = () => {
     fetchRecommendations();
   }, [state, navigate]);
 
-  const viewBuild = (champion: Champion) => {
-    //Navigate to build guide page with champion pre-selected
-    navigate('/build', { state: { champion } });
-  };
-
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center">
-        <div className="w-16 h-16 border-4 border-surface-container-highest border-t-primary rounded-full animate-spin"></div>
-        <p className="mt-6 text-secondary font-display tracking-widest uppercase animate-pulse">Running Simulation...</p>
+      <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center">
+        <div className="w-20 h-20 border-t-2 border-r-2 border-primary border-solid rounded-full animate-spin flex items-center justify-center">
+          <div className="w-16 h-16 border-b-2 border-l-2 border-secondary border-solid rounded-full animate-spin" style={{ animationDirection: 'reverse' }}></div>
+        </div>
+        <p className="mt-8 text-on-surface-variant uppercase tracking-[0.2em] animate-pulse">Loading Recommendations...</p>
       </div>
     );
   }
 
   if (error || !data) {
     return (
-      <div className="min-h-screen flex items-center justify-center flex-col text-center p-6">
+      <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center">
         <h2 className="text-tertiary text-2xl font-display mb-4">CRITICAL ERROR</h2>
-        <p className="text-surface-container-highest mb-8 max-w-md">{error}</p>
+        <p className="text-on-surface-variant mb-8">{error}</p>
         <button onClick={() => navigate('/draft')} className="btn-sovereign-ghost">RETURN TO DRAFT</button>
       </div>
     );
   }
 
-
   return (
-    <div className="min-h-screen bg-background p-6 lg:p-12">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-baseline mb-12">
-          <div>
-            <h1 className="text-4xl lg:text-5xl font-display text-primary uppercase tracking-[0.1em]">Recommended Vanguards</h1>
-            <p className="text-surface-container-highest tracking-widest uppercase mt-2">Analysis complete. Proceed with selection.</p>
-          </div>
-          <button onClick={() => navigate('/draft')} className="btn-sovereign-ghost text-sm">REVISE DRAFT</button>
-        </div>
-
-        <Section title="Optimal Overall Picks" champs={data.overallBest || []} highlight="primary" onViewBuild={viewBuild} />
-
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-12 xl:gap-8">
-          <div>
-            <Section title="Counter Measures (Enemy Favored)" champs={data.counterPicks || []} highlight="tertiary" onViewBuild={viewBuild} />
-          </div>
-          <div>
-            <Section title="Synergy Network (Ally Favored)" champs={data.synergyPicks || []} highlight="secondary" onViewBuild={viewBuild} />
-          </div>
-        </div>
-
+    <div className="min-h-screen w-full bg-background flex flex-col">
+      {/*Background Effects*/}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute inset-0 bg-linear-to-br from-[#0a1420] via-background to-[#120a1c] opacity-100"></div>
+        <div className="absolute inset-0 hex-overlay opacity-30"></div>
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-secondary/5 blur-[120px]"></div>
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-primary/5 blur-[120px]"></div>
       </div>
+
+      {/*Navigation*/}
+      <nav className="flex justify-between items-center w-full px-6 py-4 z-50 bg-[#0a1420] bg-linear-to-b from-surface-container-low to-transparent shadow-[0px_0px_32px_0px_rgba(3,11,23,0.4)] relative">
+        <div className="flex items-center gap-8">
+          <span className="text-2xl font-bold tracking-tighter text-primary font-newsreader uppercase">Sovereign Draft</span>
+          <div className="hidden md:flex gap-6 items-center">
+            <a className="text-primary border-b-2 border-primary pb-1 font-newsreader tracking-[0.05em] uppercase text-sm" href="#">Draft Advisor</a>
+            <a className="text-secondary/70 hover:text-secondary font-newsreader tracking-[0.05em] uppercase text-sm transition-all duration-200" href="#">Champion Pool</a>
+            <a className="text-secondary/70 hover:text-secondary font-newsreader tracking-[0.05em] uppercase text-sm transition-all duration-200" href="#">Match History</a>
+            <a className="text-secondary/70 hover:text-secondary font-newsreader tracking-[0.05em] uppercase text-sm transition-all duration-200" href="#">Leaderboard</a>
+          </div>
+        </div>
+        <div className="flex items-center gap-4">
+          <button className="gold-gradient-bg px-4 py-1.5 font-rajdhani tracking-widest text-xs uppercase hover:brightness-110 transition-all active:scale-95">Analyze Draft</button>
+          <div className="flex gap-2">
+            <span className="material-symbols-outlined text-secondary cursor-pointer hover:bg-surface-container-highest p-2 transition-all">settings</span>
+            <span className="material-symbols-outlined text-secondary cursor-pointer hover:bg-surface-container-highest p-2 transition-all">notifications</span>
+          </div>
+        </div>
+      </nav>
+
+      {/*Sidebar*/}
+      <aside className="hidden lg:flex flex-col h-full w-64 fixed left-0 top-0 pt-20 pb-6 bg-[#0a1420] border-r border-primary/10 z-40 shadow-2xl">
+        <div className="px-6 mb-8">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-surface-container-highest border border-primary/20 flex items-center justify-center">
+              <span className="material-symbols-outlined text-primary">analytics</span>
+            </div>
+            <div>
+              <p className="text-primary font-headline text-lg leading-tight">War Room</p>
+              <p className="text-[10px] text-secondary font-rajdhani tracking-tighter opacity-70 uppercase">Sovereign AI Active</p>
+            </div>
+          </div>
+        </div>
+        <nav className="flex-1 space-y-1">
+          <a className="flex items-center gap-4 px-6 py-3 text-secondary/60 hover:text-secondary hover:bg-surface-container-low transition-all duration-150" href="#">
+            <span className="material-symbols-outlined">strategy</span>
+            <span className="font-label text-sm tracking-wide">Current Draft</span>
+          </a>
+          <a className="flex items-center gap-4 px-6 py-3 text-primary bg-surface-container-highest border-l-4 border-primary transition-all duration-150" href="#">
+            <span className="material-symbols-outlined">swords</span>
+            <span className="font-label text-sm tracking-wide">Counter Picks</span>
+          </a>
+          <a className="flex items-center gap-4 px-6 py-3 text-secondary/60 hover:text-secondary hover:bg-surface-container-low transition-all duration-150" href="#">
+            <span className="material-symbols-outlined">group</span>
+            <span className="font-label text-sm tracking-wide">Synergy</span>
+          </a>
+        </nav>
+      </aside>
+
+      {/*Main Content*/}
+      <main className="lg:ml-64 pt-6 px-6 lg:px-12 pb-20 relative z-10">
+        {/*Header Section*/}
+        <header className="mb-10">
+          <button onClick={() => navigate('/draft')} className="flex items-center gap-2 text-secondary font-rajdhani tracking-widest text-xs mb-4 hover:gap-4 transition-all uppercase">
+            <span className="material-symbols-outlined text-sm">arrow_back</span>
+            BACK TO DRAFT
+          </button>
+          <div className="flex justify-between items-end">
+            <div>
+              <h1 className="text-4xl font-headline text-on-surface tracking-widest mb-1 uppercase">Recommendations</h1>
+              <p className="text-secondary/70 font-body text-xs uppercase tracking-tighter">Based on current draft state • {state.myRole} role</p>
+            </div>
+            <div className="flex items-center gap-4 bg-surface-container-low p-2 border-l-2 border-primary">
+              <span className="material-symbols-outlined text-primary text-xl">query_stats</span>
+              <div>
+                <p className="text-[10px] text-on-surface-variant uppercase font-rajdhani">Simulation Confidence</p>
+                <p className="text-primary font-rajdhani text-lg leading-none">94.2%</p>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        {/*Section: Overall Best Picks*/}
+        <Section
+          title="Top Overall Recommendations"
+          champs={data.overallBest || []}
+          highlight="primary"
+          onViewBuild={(champ) => navigate('/build', { state: { champion: champ } })}
+        />
+
+        {/*Section: Counter Picks*/}
+        <Section
+          title="Counter Picks"
+          champs={data.counterPicks || []}
+          highlight="secondary"
+          onViewBuild={(champ) => navigate('/build', { state: { champion: champ } })}
+        />
+
+        {/*Section: Synergy Picks*/}
+        <Section
+          title="Team Synergy Picks"
+          champs={data.synergyPicks || []}
+          highlight="tertiary"
+          onViewBuild={(champ) => navigate('/build', { state: { champion: champ } })}
+        />
+      </main>
     </div>
   );
 };
-
-//Required for the inline animation defined above
-const style = document.createElement('style');
-style.innerHTML = `
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-`;
-document.head.appendChild(style);
