@@ -27,9 +27,8 @@ export const BanRow: FC<BanRowProps> = ({ onBanClick, championsMeta }) => {
             >
               {champInfo && (
                 <>
-                  <img src={getDDragonImg(champInfo.image)} alt={champInfo.name} className="w-full h-full object-cover grayscale opacity-60" />
+                  <img src={getDDragonImg(champInfo.image)} alt={champInfo.name} className="w-full h-full object-cover opacity-60" />
                   <div className="absolute inset-0 bg-red-600/40 flex items-center justify-center">
-                    <span className="material-symbols-outlined text-white font-bold" data-icon="close">close</span>
                   </div>
                 </>
               )}
@@ -37,7 +36,7 @@ export const BanRow: FC<BanRowProps> = ({ onBanClick, championsMeta }) => {
           );
         })}
       </div>
-      
+
       <div className="flex flex-col items-center">
         <span className="cinzel text-[#f0bf5c] text-xs font-bold tracking-widest">BANS</span>
         <div className="h-0.5 w-12 bg-gradient-to-r from-[#45ddfd] via-[#f0bf5c] to-[#ff7876]"></div>
@@ -57,9 +56,8 @@ export const BanRow: FC<BanRowProps> = ({ onBanClick, championsMeta }) => {
             >
               {champInfo && (
                 <>
-                  <img src={getDDragonImg(champInfo.image)} alt={champInfo.name} className="w-full h-full object-cover grayscale opacity-60" />
+                  <img src={getDDragonImg(champInfo.image)} alt={champInfo.name} className="w-full h-full object-cover opacity-60" />
                   <div className="absolute inset-0 bg-red-600/40 flex items-center justify-center">
-                    <span className="material-symbols-outlined text-white font-bold" data-icon="close">close</span>
                   </div>
                 </>
               )}

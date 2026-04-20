@@ -7,6 +7,7 @@ import { ChampionSearch } from '../components/common/ChampionSearch';
 import { useDraftStore } from '../store/draftStore';
 import { apiClient } from '../api/client';
 import type { Champion, Role, TeamPicks } from '../types';
+import { AnalysisButton } from '../components/draft/AnalysisButton';
 
 type SearchTarget =
   | { type: 'ban'; index: number }
@@ -139,19 +140,11 @@ export const DraftInputPage: FC = () => {
           </div>
         )}
       </main>
-
-      {/*Fixed Bottom Footer for Action*/}
-      <footer className="fixed bottom-0 w-full z-50 h-28 backdrop-blur-md flex justify-center items-center px-10 bg-[#0a1420]/95 border-t border-[#f0bf5c]/20 shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
-        <div className="flex flex-col items-center gap-3">
-          <button
-            className="bg-gradient-to-r from-[#f0bf5c] to-[#c89b3c] text-[#0a1420] px-16 py-4 font-newsreader font-bold text-xl tracking-widest flex items-center gap-3 hover:brightness-110 hover:shadow-[0_0_20px_rgba(240,191,92,0.4)] active:scale-95 transition-all"
-            style={{ clipPath: 'polygon(5% 0, 100% 0, 95% 100%, 0 100%)' }}
-            onClick={() => navigate('/recommendations')}
-          >
-            <span className="material-symbols-outlined">magic_button</span>
-            INITIALIZE ANALYSIS
-          </button>
-          <div className="font-sora text-[10px] tracking-widest text-[#f0bf5c]/60 font-bold uppercase">
+      {/*Fixed Bottom Footer for Action & Status*/}
+      <footer className="fixed bottom-0 w-full z-50 h-32 backdrop-blur-md flex justify-center items-center px-10 bg-[#0a1420]/95 border-t border-[#f0bf5c]/20 shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
+        <div className="flex flex-col items-center gap-4">
+          <AnalysisButton onClick={() => navigate('/recommendations')} />
+          <div className="font-sora text-xs tracking-[0.2em] text-[#f0bf5c]/70 font-bold uppercase">
             Enemy picks: {enemyCount}/5 • Ally picks: {allyCount}/5 • Bans: {banCount}/10
           </div>
         </div>

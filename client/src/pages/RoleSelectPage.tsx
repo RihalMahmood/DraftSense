@@ -10,11 +10,11 @@ export const RoleSelectPage: FC = () => {
   const [selectedRole, setSelectedRole] = useState<Role | null>(null);
 
   const roles: { id: Role; label: string; icon: string; desc: string }[] = [
-    { id: 'top', label: 'TOP', icon: 'keyboard_double_arrow_up', desc: 'SOLO LANE CARRY' },
-    { id: 'jungle', label: 'JUNGLE', icon: 'waves', desc: 'MAP CONTROL' },
-    { id: 'mid', label: 'MID', icon: 'bolt', desc: 'BURST DAMAGE' },
-    { id: 'bot', label: 'BOT', icon: 'target', desc: 'SUSTAINED DPS' },
-    { id: 'support', label: 'SUPPORT', icon: 'security', desc: 'UTILITY TANK' }
+    { id: 'top', label: 'TOP', icon: '/images/Top_icon.png', desc: 'SOLO LANE CARRY' },
+    { id: 'jungle', label: 'JUNGLE', icon: '/images/Jungle_icon.png', desc: 'MAP CONTROL' },
+    { id: 'mid', label: 'MID', icon: '/images/Middle_icon.png', desc: 'BURST DAMAGE' },
+    { id: 'bot', label: 'BOT', icon: '/images/Bottom_icon.png', desc: 'SUSTAINED DPS' },
+    { id: 'support', label: 'SUPPORT', icon: '/images/Support_icon.png', desc: 'UTILITY TANK' }
   ];
 
   const handleRoleSelect = (role: Role) => {
@@ -47,11 +47,13 @@ export const RoleSelectPage: FC = () => {
       {/*Main Content Shell*/}
       <main className="relative z-10 flex flex-col items-center justify-center min-h-[884px] h-screen px-4 space-y-16">
         {/*Header Section*/}
-        <header className="text-center">
-          <h1 className="font-cinzel text-5xl md:text-[56px] tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-b from-primary to-primary-container font-bold">
-            DRAFTSENSE
-          </h1>
-          <p className="font-sora text-base md:text-[16px] text-[#A0B4C8] mt-4 tracking-[0.1em] opacity-80 uppercase">
+        <header className="text-center flex flex-col items-center">
+          <img
+            src="/images/DraftSense.png"
+            alt="DraftSense Logo"
+            className="w-full max-w-[600px] h-auto drop-shadow-[0_0_20px_rgba(240,191,92,0.3)] animate-float"
+          />
+          <p className="font-sora text-base md:text-[16px] text-[#A0B4C8] mt-2 tracking-[0.1em] opacity-80 uppercase">
             Your AI-powered champion draft advisor
           </p>
           <div className="w-32 h-[1px] bg-primary-container/40 mx-auto mt-8"></div>
@@ -90,10 +92,11 @@ export const RoleSelectPage: FC = () => {
                       <div className="angular-bracket-br hidden group-hover:block opacity-30"></div>
                     </>
                   )}
-                  <span className={`material-symbols-outlined text-4xl mb-4 transition-transform duration-300 ${isActive ? 'text-primary scale-110' : 'text-primary group-hover:scale-110'}`}
-                    style={{ fontVariationSettings: "'FILL' 1" }}>
-                    {role.icon}
-                  </span>
+                  <img
+                    src={role.icon}
+                    alt={role.label}
+                    className={`w-12 h-12 mb-4 object-contain transition-transform duration-300 ${isActive ? 'scale-110 brightness-125' : 'group-hover:scale-110 opacity-70 group-hover:opacity-100'}`}
+                  />
                   <span className={`font-cinzel text-sm tracking-[0.1em] mb-1 ${isActive ? 'text-primary' : 'text-on-background'}`}>{role.label}</span>
                   <span className="font-body text-[10px] text-[#A0B4C8] text-center px-2">{role.desc}</span>
                 </button>
