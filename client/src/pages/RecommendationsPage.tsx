@@ -13,10 +13,11 @@ interface SectionProps {
 }
 
 const Section = ({ title, champs, highlight, onViewBuild }: SectionProps) => {
-  const getDDragonImg = (champId: string, imageFile: string) => {
+  const getDDragonImg = (champId: string) => {
+    const assetId = champId === 'Fiddlesticks' ? 'FiddleSticks' : champId;
     return [
-      `https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${champId}_0.jpg`,
-      `https://ddragon.leagueoflegends.com/cdn/14.8.1/img/champion/${imageFile}`
+      `https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${assetId}_0.jpg`,
+      `https://ddragon.leagueoflegends.com/cdn/img/champion/tiles/${assetId}_0.jpg`
     ];
   };
 
@@ -30,7 +31,7 @@ const Section = ({ title, champs, highlight, onViewBuild }: SectionProps) => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {champs.map((champ, idx) => {
-          const [loadingImg, fallbackImg] = getDDragonImg(champ.id, champ.image);
+          const [loadingImg, fallbackImg] = getDDragonImg(champ.id);
           return (
             <div
               key={champ.id}

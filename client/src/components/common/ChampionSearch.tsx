@@ -76,7 +76,7 @@ export const ChampionSearch: FC<ChampionSearchProps> = ({ onSelect, onClose, isD
                     }}
                   >
                     <img
-                      src={`https://ddragon.leagueoflegends.com/cdn/14.8.1/img/champion/${champ.image}`}
+                      src={`https://ddragon.leagueoflegends.com/cdn/img/champion/tiles/${champ.id === 'Fiddlesticks' ? 'FiddleSticks' : champ.id}_0.jpg`}
                       alt={champ.name}
                       className="w-14 h-14 object-cover border border-surface-container-highest group-hover:border-primary"
                     />

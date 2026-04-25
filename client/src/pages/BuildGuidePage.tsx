@@ -101,7 +101,7 @@ export const BuildGuidePage: FC = () => {
           <div className="w-12 h-12 border-2 border-primary overflow-hidden">
             <img
               className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-              src={`https://ddragon.leagueoflegends.com/cdn/14.8.1/img/champion/${selectedChampion.image}`}
+              src={`https://ddragon.leagueoflegends.com/cdn/img/champion/tiles/${selectedChampion.id === 'Fiddlesticks' ? 'FiddleSticks' : selectedChampion.id}_0.jpg`}
               alt={selectedChampion.name}
             />
           </div>
@@ -141,7 +141,7 @@ export const BuildGuidePage: FC = () => {
           <div
             className="absolute inset-0 bg-cover bg-center"
             style={{
-              backgroundImage: `url('https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${selectedChampion.id}_0.jpg')`
+              backgroundImage: `url('https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${selectedChampion.id === 'Fiddlesticks' ? 'FiddleSticks' : selectedChampion.id}_0.jpg')`
             }}
           ></div>
           <div className="absolute inset-0 bg-[#030B17] opacity-85"></div>
@@ -158,7 +158,7 @@ export const BuildGuidePage: FC = () => {
                 <div className="w-24 h-24 rounded-full border-4 border-primary p-1 overflow-hidden">
                   <img
                     className="w-full h-full object-cover rounded-full"
-                    src={`https://ddragon.leagueoflegends.com/cdn/14.8.1/img/champion/${selectedChampion.image}`}
+                    src={`https://ddragon.leagueoflegends.com/cdn/img/champion/tiles/${selectedChampion.id === 'Fiddlesticks' ? 'FiddleSticks' : selectedChampion.id}_0.jpg`}
                     alt={selectedChampion.name}
                   />
                 </div>

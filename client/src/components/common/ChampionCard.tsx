@@ -32,7 +32,7 @@ export const ChampionCard: FC<ChampionCardProps> = ({ champion, role, onClick, c
     );
   }
 
-  const imageUrl = `https://ddragon.leagueoflegends.com/cdn/14.8.1/img/champion/${champion.image}`;
+  const imageUrl = `https://ddragon.leagueoflegends.com/cdn/img/champion/tiles/${champion.id === 'Fiddlesticks' ? 'FiddleSticks' : champion.id}_0.jpg`;
 
   return (
     <div className={`cursor-pointer group ${className}`} onClick={onClick}>

@@ -9,8 +9,9 @@ interface BanRowProps {
 
 export const BanRow: FC<BanRowProps> = ({ onBanClick, championsMeta }) => {
   const bans = useDraftStore(state => state.bans);
+  const setBan = useDraftStore(state => state.setBan);
 
-  const getDDragonImg = (imageName: string) => `https://ddragon.leagueoflegends.com/cdn/14.8.1/img/champion/${imageName}`;
+  const getDDragonImg = (champId: string) => `https://ddragon.leagueoflegends.com/cdn/img/champion/tiles/${champId === 'Fiddlesticks' ? 'FiddleSticks' : champId}_0.jpg`;
 
   return (
     <>
@@ -26,11 +27,20 @@ export const BanRow: FC<BanRowProps> = ({ onBanClick, championsMeta }) => {
               className="w-12 h-12 bg-surface-container-low border border-dashed border-[#45ddfd]/30 relative overflow-hidden cursor-pointer hover:border-[#45ddfd] transition-colors"
             >
               {champInfo && (
-                <>
-                  <img src={getDDragonImg(champInfo.image)} alt={champInfo.name} className="w-full h-full object-cover opacity-60" />
-                  <div className="absolute inset-0 bg-red-600/40 flex items-center justify-center">
-                  </div>
-                </>
+                <div className="group/ban relative w-full h-full">
+                  <img src={getDDragonImg(champInfo.id)} alt={champInfo.name} className="w-full h-full object-cover opacity-60" />
+                  <div className="absolute inset-0 bg-red-600/40 flex items-center justify-center pointer-events-none"></div>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setBan(idx, null);
+                    }}
+                    title="Clear ban"
+                    className="absolute inset-0 bg-red-900/80 opacity-0 group-hover/ban:opacity-100 flex items-center justify-center transition-opacity"
+                  >
+                    <span className="material-symbols-outlined text-white text-lg">close</span>
+                  </button>
+                </div>
               )}
             </div>
           );
@@ -55,11 +65,20 @@ export const BanRow: FC<BanRowProps> = ({ onBanClick, championsMeta }) => {
               className="w-12 h-12 bg-surface-container-low border border-dashed border-[#ff7876]/30 relative overflow-hidden cursor-pointer hover:border-[#ff7876] transition-colors"
             >
               {champInfo && (
-                <>
-                  <img src={getDDragonImg(champInfo.image)} alt={champInfo.name} className="w-full h-full object-cover opacity-60" />
-                  <div className="absolute inset-0 bg-red-600/40 flex items-center justify-center">
-                  </div>
-                </>
+                <div className="group/ban relative w-full h-full">
+                  <img src={getDDragonImg(champInfo.id)} alt={champInfo.name} className="w-full h-full object-cover opacity-60" />
+                  <div className="absolute inset-0 bg-red-600/40 flex items-center justify-center pointer-events-none"></div>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setBan(absoluteIdx, null);
+                    }}
+                    title="Clear ban"
+                    className="absolute inset-0 bg-red-900/80 opacity-0 group-hover/ban:opacity-100 flex items-center justify-center transition-opacity"
+                  >
+                    <span className="material-symbols-outlined text-white text-lg">close</span>
+                  </button>
+                </div>
               )}
             </div>
           );

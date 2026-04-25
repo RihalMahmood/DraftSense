@@ -26,8 +26,8 @@ export const TeamColumn: FC<TeamColumnProps> = ({ side, onPickClick, championsMe
   //const iconBorderOpacity = isBlue ? 'border-[#f0bf5c]/30 shadow-[0_0_10px_rgba(240,191,92,0.2)]' : 'border-[#45ddfd]/30 shadow-[0_0_10px_rgba(69,221,253,0.2)]';
   const nameColor = isBlue ? 'text-[#45ddfd]' : 'text-[#ff7876]';
 
-  const getDDragonImg = (imageName: string) => `https://ddragon.leagueoflegends.com/cdn/14.8.1/img/champion/${imageName}`;
-  const getSplashImg = (champId: string) => `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champId}_0.jpg`;
+  const getDDragonImg = (champId: string) => `https://ddragon.leagueoflegends.com/cdn/img/champion/tiles/${champId === 'Fiddlesticks' ? 'FiddleSticks' : champId}_0.jpg`;
+  const getSplashImg = (champId: string) => `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champId === 'Fiddlesticks' ? 'FiddleSticks' : champId}_0.jpg`;
 
   const getRoleIcon = (role: Role) => {
     const map: Record<string, string> = {
@@ -59,12 +59,17 @@ export const TeamColumn: FC<TeamColumnProps> = ({ side, onPickClick, championsMe
           >
             {/*Background Splash Art*/}
             {champInfo && (
-              <img
-                className="absolute inset-0 w-full h-full object-cover opacity-20 filter brightness-50 group-hover:opacity-40 transition-all duration-700 scale-110 group-hover:scale-100"
-                style={{ objectPosition: 'center 20%' }}
-                src={getSplashImg(champInfo.id)}
-                alt=""
-              />
+              <div
+                className="absolute inset-0"
+                style={{ transform: !isBlue ? 'scaleX(-1)' : undefined }}
+              >
+                <img
+                  className="w-full h-full object-cover opacity-20 filter brightness-50 group-hover:opacity-40 transition-all duration-700 scale-110 group-hover:scale-100"
+                  style={{ objectPosition: 'center 20%' }}
+                  src={getSplashImg(champInfo.id)}
+                  alt=""
+                />
+              </div>
             )}
 
             {/*Gradient Overlay*/}
@@ -112,7 +117,7 @@ export const TeamColumn: FC<TeamColumnProps> = ({ side, onPickClick, championsMe
                     <>
                       <img
                         className="w-full h-full object-cover"
-                        src={getDDragonImg(champInfo.image)}
+                        src={getDDragonImg(champInfo.id)}
                         alt={champInfo.name}
                       />
                       <button
@@ -122,9 +127,9 @@ export const TeamColumn: FC<TeamColumnProps> = ({ side, onPickClick, championsMe
                           else setEnemyPick(role, null);
                         }}
                         title="Clear pick"
-                        className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-[#0b1220]/80 flex items-center justify-center text-xs text-white hover:bg-red-600 transition-colors z-20"
+                        className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-all duration-300 z-20 backdrop-blur-[1px]"
                       >
-                        <span className="material-symbols-outlined text-[14px]">close</span>
+                        <span className="material-symbols-outlined text-white text-2xl font-light">close</span>
                       </button>
                     </>
                   ) : (
