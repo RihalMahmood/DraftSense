@@ -7,9 +7,10 @@ import { apiClient } from '../../api/client';
 interface ChampionSearchProps {
   onSelect: (championId: string) => void;
   onClose: () => void;
+  isDisabled?: (championId: string) => boolean;
 }
 
-export const ChampionSearch: FC<ChampionSearchProps> = ({ onSelect, onClose }) => {
+export const ChampionSearch: FC<ChampionSearchProps> = ({ onSelect, onClose, isDisabled }) => {
   const [champions, setChampions] = useState<Champion[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
@@ -62,25 +63,29 @@ export const ChampionSearch: FC<ChampionSearchProps> = ({ onSelect, onClose }) =
             </div>
           ) : (
             <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-4">
-              {filtered.map(champ => (
-                <div
-                  key={champ.id}
-                  className="flex flex-col items-center cursor-pointer group hover:scale-105 transition-transform"
-                  onClick={() => {
-                    onSelect(champ.id);
-                    onClose();
-                  }}
-                >
-                  <img
-                    src={`https://ddragon.leagueoflegends.com/cdn/14.8.1/img/champion/${champ.image}`}
-                    alt={champ.name}
-                    className="w-14 h-14 object-cover border border-surface-container-highest group-hover:border-primary"
-                  />
-                  <span className="text-xs mt-1 text-center font-body truncate w-full text-surface-container-highest group-hover:text-primary">
-                    {champ.name}
-                  </span>
-                </div>
-              ))}
+              {filtered.map(champ => {
+                const disabled = isDisabled ? isDisabled(champ.id) : false;
+                return (
+                  <div
+                    key={champ.id}
+                    className={`flex flex-col items-center group transition-transform ${disabled ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer hover:scale-105'}`}
+                    onClick={() => {
+                      if (disabled) return;
+                      onSelect(champ.id);
+                      onClose();
+                    }}
+                  >
+                    <img
+                      src={`https://ddragon.leagueoflegends.com/cdn/14.8.1/img/champion/${champ.image}`}
+                      alt={champ.name}
+                      className="w-14 h-14 object-cover border border-surface-container-highest group-hover:border-primary"
+                    />
+                    <span className="text-xs mt-1 text-center font-body truncate w-full text-surface-container-highest group-hover:text-primary">
+                      {champ.name}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>

@@ -3,7 +3,7 @@ import type { Role, TeamPicks } from '../types';
 
 interface DraftState {
   myRole: Role | null;
-  bans: string[];
+  bans: (string | null)[];    //Array of 10 bans (5 per team)
   enemyPicks: TeamPicks;
   allyPicks: TeamPicks;
   setMyRole: (role: Role) => void;
@@ -32,8 +32,8 @@ export const useDraftStore = create<DraftState>((set) => ({
   setBan: (index, championId) =>
     set((state) => {
       const newBans = [...state.bans];
-      newBans[index] = championId ?? '';
-      return { bans: newBans.filter(Boolean) as string[] }; // keep only defined bans if any
+      newBans[index] = championId ?? null;
+      return { bans: newBans };
     }),
 
   setEnemyPick: (role, championId) =>
@@ -49,7 +49,7 @@ export const useDraftStore = create<DraftState>((set) => ({
   resetDraft: () =>
     set({
       myRole: null,
-      bans: [],
+      bans: Array(10).fill(null),
       enemyPicks: { ...initialTeamPicks },
       allyPicks: { ...initialTeamPicks },
     }),

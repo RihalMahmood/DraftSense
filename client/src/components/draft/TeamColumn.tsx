@@ -12,6 +12,8 @@ export const TeamColumn: FC<TeamColumnProps> = ({ side, onPickClick, championsMe
   const isBlue = side === 'blue';
   const picks = useDraftStore(state => isBlue ? state.allyPicks : state.enemyPicks);
   const myRole = useDraftStore(state => state.myRole);
+  const setAllyPick = useDraftStore(state => state.setAllyPick);
+  const setEnemyPick = useDraftStore(state => state.setEnemyPick);
 
   const roles: Role[] = ['top', 'jungle', 'mid', 'bot', 'support'];
 
@@ -107,11 +109,24 @@ export const TeamColumn: FC<TeamColumnProps> = ({ side, onPickClick, championsMe
               <div className="relative shrink-0 flex items-center justify-center">
                 <div className={`w-14 h-14 bg-[#0a1420] border-2 ${isMe ? 'border-[#f0bf5c]' : borderColor} relative overflow-hidden shadow-2xl transition-transform duration-300 group-hover:scale-110 z-10`}>
                   {champInfo ? (
-                    <img
-                      className="w-full h-full object-cover"
-                      src={getDDragonImg(champInfo.image)}
-                      alt={champInfo.name}
-                    />
+                    <>
+                      <img
+                        className="w-full h-full object-cover"
+                        src={getDDragonImg(champInfo.image)}
+                        alt={champInfo.name}
+                      />
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (isBlue) setAllyPick(role, null);
+                          else setEnemyPick(role, null);
+                        }}
+                        title="Clear pick"
+                        className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-[#0b1220]/80 flex items-center justify-center text-xs text-white hover:bg-red-600 transition-colors z-20"
+                      >
+                        <span className="material-symbols-outlined text-[14px]">close</span>
+                      </button>
+                    </>
                   ) : (
                     <div className="flex items-center justify-center h-full">
                       <span className={`material-symbols-outlined text-2xl ${isMe ? 'text-[#f0bf5c] animate-pulse' : 'text-[#45ddfd]/20'}`}>

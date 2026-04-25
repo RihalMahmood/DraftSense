@@ -43,8 +43,31 @@ export const DraftInputPage: FC = () => {
     if (!searchTarget) return;
 
     if (searchTarget.type === 'ban') {
+      const isBlue = searchTarget.index < 5;
+      const start = isBlue ? 0 : 5;
+      const sideBans = bans.slice(start, start + 5);
+      const alreadyBannedInSide = sideBans.some((b, i) => b === championId && (start + i) !== searchTarget.index);
+      if (alreadyBannedInSide) {
+        window.alert('This champion is already banned by your team in another slot.');
+        return;
+      }
       setBan(searchTarget.index, championId);
     } else if (searchTarget.type === 'pick') {
+      //Disallow picking a banned champion
+      if (bans.some(b => b === championId)) {
+        window.alert('Cannot pick a champion that is banned.');
+        return;
+      }
+
+      //Disallow duplicate picks across both teams (allow keeping the same champ in the current slot)
+      const currentSlotChamp = searchTarget.side === 'blue' ? allyPicks[searchTarget.role] : enemyPicks[searchTarget.role];
+      const allPicked = [...Object.values(allyPicks), ...Object.values(enemyPicks)];
+      const alreadyPickedElsewhere = allPicked.some(p => p === championId && p !== currentSlotChamp);
+      if (alreadyPickedElsewhere) {
+        window.alert('This champion is already picked in another slot.');
+        return;
+      }
+
       if (searchTarget.side === 'blue') {
         setAllyPick(searchTarget.role, championId);
       } else {
@@ -134,6 +157,31 @@ export const DraftInputPage: FC = () => {
                 <ChampionSearch
                   onSelect={handleSelectChampion}
                   onClose={() => setSearchTarget(null)}
+                  isDisabled={(championId: string) => {
+                    if (!searchTarget) return false;
+
+                    if (searchTarget.type === 'pick') {
+                      //cannot pick if banned anywhere
+                      if (bans.some(b => b === championId)) return true;
+
+                      //cannot pick if already picked elsewhere (allow current slot's existing champ)
+                      const currentSlotChamp = searchTarget.side === 'blue' ? allyPicks[searchTarget.role] : enemyPicks[searchTarget.role];
+                      const allPicked = [...Object.values(allyPicks), ...Object.values(enemyPicks)].filter(Boolean) as string[];
+                      const pickedSet = new Set(allPicked);
+                      if (currentSlotChamp) pickedSet.delete(currentSlotChamp);
+                      return pickedSet.has(championId);
+                    }
+
+                    if (searchTarget.type === 'ban') {
+                      const isBlue = searchTarget.index < 5;
+                      const start = isBlue ? 0 : 5;
+                      const sideBans = bans.slice(start, start + 5).filter(Boolean) as string[];
+                      const currentBan = bans[searchTarget.index];
+                      return sideBans.includes(championId) && championId !== currentBan;
+                    }
+
+                    return false;
+                  }}
                 />
               </div>
             </div>
