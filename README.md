@@ -285,5 +285,5 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 <p align="center">
   Built with ❤️ for the League of Legends community<br/>
-  <sub>DraftSense — Pick smarter. Win more.</sub>
+  <sub>DraftSense - Pick smarter. Win more.</sub>
 </p>
