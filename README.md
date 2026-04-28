@@ -4,7 +4,7 @@
 
 <p align="center">
   <strong>Your AI-powered League of Legends champion draft advisor.</strong><br/>
-  Real-time counter picks, team synergy analysis, rune pages & item builds — all in one place.
+  Real-time counter picks, team synergy analysis, rune pages & item builds - all in one place.
 </p>
 
 <p align="center">
@@ -19,7 +19,7 @@
 
 ## What is DraftSense?
 
-DraftSense is a full-stack web application built for League of Legends players who want a competitive edge during champion select. You input the current state of your draft — bans, enemy picks, ally picks, and your role — and DraftSense's AI engine tells you exactly what to pick and how to play it.
+DraftSense is a full-stack web application built for League of Legends players who want a competitive edge during champion select. You input the current state of your draft - bans, enemy picks, ally picks, and your role - and DraftSense's AI engine tells you exactly what to pick and how to play it.
 
 > Think of it as your personal analyst whispering in your ear during champion select.
 
@@ -27,13 +27,13 @@ DraftSense is a full-stack web application built for League of Legends players w
 
 ## Features
 
-- **Role-Aware Recommendations** — Select your role first, get picks tailored to your position
-- **Counter Pick Engine** — AI scores and ranks the best champions to counter your enemy lineup
-- **Synergy Analysis** — Finds champions that amplify your teammates' strengths
-- **Combined AI Recommendations** — Top 3 picks balancing both counter strength and team synergy
-- **Full Build Guides** — Rune pages, item build order, skill order, and matchup-specific tips
-- **Local AI via Ollama** — Runs entirely on your machine with `llama3.1:8b`, no API keys needed
-- **LoL-Inspired UI** — Dark cinematic design matching League of Legends' in-client aesthetic
+- **Role-Aware Recommendations** - Select your role first, get picks tailored to your position
+- **Counter Pick Engine** - AI scores and ranks the best champions to counter your enemy lineup
+- **Synergy Analysis** - Finds champions that amplify your teammates' strengths
+- **Combined AI Recommendations** - Top 3 picks balancing both counter strength and team synergy
+- **Full Build Guides** - Rune pages, item build order, skill order, and matchup-specific tips
+- **Local AI via Ollama** - Runs entirely on your machine with `llama3.1:8b`, no API keys needed
+- **LoL-Inspired UI** - Dark cinematic design matching League of Legends' in-client aesthetic
 
 ---
 
@@ -153,11 +153,11 @@ npm run seed
 ### 6. Run the application
 
 ```bash
-# Terminal 1 — Start the backend
+# Terminal 1 - Start the backend
 cd server
 npm run dev
 
-# Terminal 2 — Start the frontend
+# Terminal 2 - Start the frontend
 cd client
 npm run dev
 ```
@@ -228,19 +228,19 @@ draftsense/
 
 DraftSense uses a two-stage recommendation pipeline:
 
-**Stage 1 — Statistical Scoring (`statsService.ts`)**
+**Stage 1 - Statistical Scoring (`statsService.ts`)**
 ```
 Counter Score  = avg winrate of candidate vs each enemy pick (weighted by role)
 Synergy Score  = avg winrate of candidate alongside each ally pick
 Overall Score  = (Counter Score × 0.6) + (Synergy Score × 0.4)
 ```
 
-**Stage 2 — LLM Explanation (`aiService.ts`)**
+**Stage 2 - LLM Explanation (`aiService.ts`)**
 
 The top-scored champions are passed to `llama3.1:8b` via Ollama, which generates:
 - Natural language reasoning for each recommendation
-- Matchup-specific tips (e.g., *"Gank mid before level 6 — Syndra has no escape pre-6"*)
-- Contextual build narration (e.g., *"Rush Sunfire Cape — 3 enemy divers need early armor"*)
+- Matchup-specific tips (e.g., *"Gank mid before level 6 - Syndra has no escape pre-6"*)
+- Contextual build narration (e.g., *"Rush Sunfire Cape - 3 enemy divers need early armor"*)
 
 ---
 
@@ -285,5 +285,5 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 <p align="center">
   Built with ❤️ for the League of Legends community<br/>
-  <sub>DraftSense — Pick smarter. Win more.</sub>
+  <sub>DraftSense - Pick smarter. Win more.</sub>
 </p>
