@@ -1,4 +1,5 @@
 #Normal Files
+PROJECT_PLAN.md
 Project_plan.txt
 BuildGuidePage.html
 DraftInputPage.html
@@ -38,3 +39,27 @@ npm-debug.log*
 
 #TypeScript cache
 *.tsbuildinfo
+
+#Python / ML Service
+ml_service/venv/
+ml_service/.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+.pytest_cache/
+
+#Jupyter
+.ipynb_checkpoints/
+
+#Trained model files (large binary — store via Git LFS or Render deploy)
+ml_service/models/trained/*.pkl
+ml_service/models/trained/*.onnx
+ml_service/models/trained/*.pt
+
+#Raw match data (can be hundreds of GB)
+ml_service/data/raw/*.json
+ml_service/data/features.csv
+ml_service/data/champions.json

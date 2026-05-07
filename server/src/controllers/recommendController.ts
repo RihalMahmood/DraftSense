@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import { z } from 'zod';
 import { scoreChampions } from '../services/statsService';
-import { enrichRecommendations } from '../services/aiService';
-import { RecommendRequest, Role } from '../types';
+import { getMLScore } from '../services/mlService';
+import { generatePickExplanation } from '../services/explanationService';
+import { RecommendRequest, ScoredChampion } from '../types';
 
 const TeamPicksSchema = z.object({
   top: z.string().nullable().optional(),
@@ -18,6 +19,37 @@ const RecommendSchema = z.object({
   enemyPicks: TeamPicksSchema.default({}),
   allyPicks: TeamPicksSchema.default({}),
 });
+
+/*
+Attempts to enrich a scored champion with ML service scores.
+Falls back to the existing statsService scores if ML is unavailable.
+Once the model is fully trained and deployed, statsService becomes a fallback only.
+*/
+async function enrichWithML(
+  pick: ScoredChampion,
+  input: RecommendRequest
+): Promise<ScoredChampion> {
+  const mlResult = await getMLScore({
+    my_role: input.myRole,
+    candidate_champion: pick.champion.name,
+    enemy_picks: input.enemyPicks as Record<string, string | null>,
+    ally_picks: input.allyPicks as Record<string, string | null>,
+    bans: input.bans,
+  });
+
+  //ML service available and has a trained model → override scores
+  if (mlResult) {
+    return {
+      ...pick,
+      counterScore: parseFloat((mlResult.counter_score * 100).toFixed(2)),
+      synergyScore: parseFloat((mlResult.synergy_score * 100).toFixed(2)),
+      overallScore: parseFloat((mlResult.overall_score * 100).toFixed(2)),
+    };
+  }
+
+  //ML service not ready → keep existing statsService scores unchanged
+  return pick;
+}
 
 export const recommend = async (
   req: Request,
@@ -37,24 +69,31 @@ export const recommend = async (
 
     const input = parsed.data as RecommendRequest;
 
-    //Score champions using matchup + synergy DB data
-    const { counterPicks, synergyPicks, overallBest } =
-      await scoreChampions(input);
+    //Phase 0–2: statsService provides scores from MongoDB matchup/synergy data.
+    //Phase 3+:  ML service overrides scores per-champion (enrichWithML).
+    const { counterPicks, synergyPicks, overallBest } = await scoreChampions(input);
 
-    //Enrich top picks with AI explanations (non-blocking fallback)
-    //We call these sequentially to prevent overloading local local OLLAMA VRAM/Queues.
-    const enrichedCounters = await enrichRecommendations(input, counterPicks);
-    const enrichedSynergies = await enrichRecommendations(input, synergyPicks);
-    const enrichedOverall = await enrichRecommendations(input, overallBest);
+    //Enrich each group with ML scores (no-op if ML service is offline/not trained)
+    const [enrichedCounters, enrichedSynergies, enrichedOverall] = await Promise.all([
+      Promise.all(counterPicks.map((p) => enrichWithML(p, input))),
+      Promise.all(synergyPicks.map((p) => enrichWithML(p, input))),
+      Promise.all(overallBest.map((p) => enrichWithML(p, input))),
+    ]);
 
-    const mapScoredChampion = (sc: any) => ({
+    const mapScoredChampion = (sc: ScoredChampion & { aiExplanation?: string }) => ({
       ...sc.champion,
-      id: sc.champion.championId,
+      id: (sc.champion as any).championId ?? sc.champion.id,
       image: sc.champion.imageUrl.split('/').pop(),
-      aiExplanation: sc.aiExplanation,
       counterScore: sc.counterScore,
       synergyScore: sc.synergyScore,
-      overallScore: sc.overallScore
+      overallScore: sc.overallScore,
+      explanation: generatePickExplanation(
+        sc.champion.name,
+        sc.counterScore,
+        sc.synergyScore,
+        input.enemyPicks as Record<string, string | null>,
+        input.allyPicks as Record<string, string | null>
+      ),
     });
 
     res.json({

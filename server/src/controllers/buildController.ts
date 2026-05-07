@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { z } from 'zod';
 import Build from '../models/Build';
-import { generateBuildNarration } from '../services/aiService';
+import { generateBuildNarration } from '../services/explanationService';
 import { BuildRequest } from '../types';
 
 const TeamPicksSchema = z.object({
@@ -48,10 +48,14 @@ export const getBuild = async (
       return;
     }
 
-    //Generate AI narration for this build (graceful fallback)
-    const aiNarration = await generateBuildNarration(input);
+    //Template-based narration - no LLM required
+    const narration = generateBuildNarration(
+      input.champion,
+      input.role,
+      input.enemyPicks as Record<string, string | null>
+    );
 
-    res.json({ ...build, aiNarration });
+    res.json({ ...build, narration });
   } catch (err) {
     next(err);
   }

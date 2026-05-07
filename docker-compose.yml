@@ -1,0 +1,68 @@
+version: "3.9"
+
+services:
+  #React Frontend (Vite)
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    command: npm run dev -- --host
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_BASE_URL=http://localhost:5000/api
+    depends_on:
+      - server
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+
+  #Express API (Node.js)
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    command: npm run dev
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - NODE_ENV=development
+      - MONGO_URI=${MONGO_URI}
+      - CLIENT_URL=http://localhost:5173
+      - ML_SERVICE_URL=http://ml_service:8000
+    depends_on:
+      - ml_service
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+
+  #Python FastAPI ML Service
+  ml_service:
+    build:
+      context: ./ml_service
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    command: uvicorn api.main:app --host 0.0.0.0 --port 8000
+    environment:
+      - MODEL_PATH=/app/models/trained/xgboost_v1.pkl
+      - MONGO_URI=${MONGO_URI}
+      - RIOT_API_KEY=${RIOT_API_KEY}
+      - CURRENT_PATCH=${CURRENT_PATCH:-14.8}
+      - PORT=8000
+    volumes:
+      - ./ml_service:/app
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
