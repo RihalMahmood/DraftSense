@@ -19,7 +19,7 @@
 
 ## What is DraftSense?
 
-DraftSense is a full-stack, microservice-based web application built for League of Legends players who want a competitive edge during champion select. By inputting the active draft state—including bans, enemy picks, ally picks, and your selected role—DraftSense's machine learning engine predicts the optimal champions for your game. 
+DraftSense is a full-stack, microservice-based web application built for League of Legends players who want a competitive edge during champion select. By inputting the active draft state—including bans, enemy picks, ally picks, and your selected role-DraftSense's machine learning engine predicts the optimal champions for your game. 
 
 Rather than relying on generic static charts, DraftSense employs a trained **XGBoost gradient boosting model** to run predictive real-time analysis against professional and high-elo draft data. It balances direct lane counters with overall team synergy, then renders a complete tactical strategy: optimal runes, item build orders, skill leveling paths, and threat-specific counter items.
 
